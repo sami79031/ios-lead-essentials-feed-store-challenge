@@ -9,6 +9,22 @@
 import XCTest
 import FeedStoreChallenge
 
+class CoreDataFeedStore: FeedStore {
+    func deleteCachedFeed(completion: @escaping DeletionCompletion) {
+        fatalError("Not omplemented")
+    }
+    
+    func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
+        fatalError("Not omplemented")
+    }
+    
+    func retrieve(completion: @escaping RetrievalCompletion) {
+        completion(.empty)
+    }
+    
+    
+}
+
 class FeedStoreIntegrationTests: XCTestCase {
 
     //  ***********************
@@ -31,9 +47,9 @@ class FeedStoreIntegrationTests: XCTestCase {
     }
     
     func test_retrieve_deliversEmptyOnEmptyCache() {
-//        let sut = makeSUT()
-//
-//        expect(sut, toRetrieve: .empty)
+        let sut = makeSUT()
+
+        expect(sut, toRetrieve: .empty)
     }
 
     func test_retrieve_deliversFeedInsertedOnAnotherInstance() {
@@ -76,7 +92,7 @@ class FeedStoreIntegrationTests: XCTestCase {
     // - MARK: Helpers
     
     private func makeSUT() -> FeedStore {
-        fatalError("Must be implemented")
+        return CoreDataFeedStore()
     }
     
     private func setupEmptyStoreState() {
