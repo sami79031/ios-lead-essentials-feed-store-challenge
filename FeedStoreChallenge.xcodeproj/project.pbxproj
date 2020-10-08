@@ -18,7 +18,9 @@
 		08CE2BB32285BCE700183A1B /* XCTestCase+FailableInsertFeedStoreSpecs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE2BAE2285BCE700183A1B /* XCTestCase+FailableInsertFeedStoreSpecs.swift */; };
 		08CE2BB52285BEF100183A1B /* FeedStoreChallengeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */; };
 		32E0105B252F5E4E00A7F302 /* FeedStoreIntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 084BB13B24FE50A10091C705 /* FeedStoreIntegrationTests.swift */; };
-		32E01077252F64F600A7F302 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32E00FFB252F3C0C00A7F302 /* Model.xcdatamodeld */; };
+		32E01087252F683200A7F302 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E01086252F683200A7F302 /* Helpers.swift */; };
+		32E0108A252F68B400A7F302 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 32E00FFB252F3C0C00A7F302 /* Model.xcdatamodeld */; };
+		32E01090252F68D000A7F302 /* CoreDataFeedStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32E0108F252F68D000A7F302 /* CoreDataFeedStore.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +49,8 @@
 		08CE2BAE2285BCE700183A1B /* XCTestCase+FailableInsertFeedStoreSpecs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XCTestCase+FailableInsertFeedStoreSpecs.swift"; sourceTree = "<group>"; };
 		08CE2BB42285BEF100183A1B /* FeedStoreChallengeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedStoreChallengeTests.swift; sourceTree = "<group>"; };
 		32E00FFC252F3C0C00A7F302 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		32E01086252F683200A7F302 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		32E0108F252F68D000A7F302 /* CoreDataFeedStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataFeedStore.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,7 +93,7 @@
 		08CE2B8D2285BBD100183A1B /* FeedStoreChallenge */ = {
 			isa = PBXGroup;
 			children = (
-				32E00FFB252F3C0C00A7F302 /* Model.xcdatamodeld */,
+				32E01080252F680800A7F302 /* CoreDataStore */,
 				08CE2BA72285BCC600183A1B /* LocalFeedImage.swift */,
 				08CE2BA52285BCB600183A1B /* FeedStore.swift */,
 				08CE2B8F2285BBD100183A1B /* Info.plist */,
@@ -119,6 +123,16 @@
 				084BB13D24FE56830091C705 /* XCTestCase+FeedStoreHelpers.swift */,
 			);
 			path = FeedStoreSpecs;
+			sourceTree = "<group>";
+		};
+		32E01080252F680800A7F302 /* CoreDataStore */ = {
+			isa = PBXGroup;
+			children = (
+				32E00FFB252F3C0C00A7F302 /* Model.xcdatamodeld */,
+				32E01086252F683200A7F302 /* Helpers.swift */,
+				32E0108F252F68D000A7F302 /* CoreDataFeedStore.swift */,
+			);
+			path = CoreDataStore;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -231,8 +245,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				32E01090252F68D000A7F302 /* CoreDataFeedStore.swift in Sources */,
 				08CE2BA62285BCB600183A1B /* FeedStore.swift in Sources */,
+				32E01087252F683200A7F302 /* Helpers.swift in Sources */,
 				08CE2BA82285BCC600183A1B /* LocalFeedImage.swift in Sources */,
+				32E0108A252F68B400A7F302 /* Model.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -245,7 +262,6 @@
 				32E0105B252F5E4E00A7F302 /* FeedStoreIntegrationTests.swift in Sources */,
 				08CE2BB12285BCE700183A1B /* XCTestCase+FailableRetrieveFeedStoreSpecs.swift in Sources */,
 				08CE2BAF2285BCE700183A1B /* XCTestCase+FeedStoreSpecs.swift in Sources */,
-				32E01077252F64F600A7F302 /* Model.xcdatamodeld in Sources */,
 				08CE2BB32285BCE700183A1B /* XCTestCase+FailableInsertFeedStoreSpecs.swift in Sources */,
 				084BB13E24FE56830091C705 /* XCTestCase+FeedStoreHelpers.swift in Sources */,
 				08CE2BB52285BEF100183A1B /* FeedStoreChallengeTests.swift in Sources */,
