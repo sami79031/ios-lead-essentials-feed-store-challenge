@@ -20,8 +20,8 @@ public class CoreDataFeedStore: FeedStore {
     }
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        deleteAllCachedData()
-        completion(nil)
+        let possibleDeleteError = deleteAllCachedData()
+        completion(possibleDeleteError)
     }
     
     public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
@@ -31,8 +31,13 @@ public class CoreDataFeedStore: FeedStore {
             let cache = Cache.getUniqueManagedCache(in: context)
             cache.timestamp = timestamp
             cache.managedFeeds = feed.mapToManagedFeedImages(in: context).toNSOrderedSet
-            try! context.save()
-            completion(nil)
+            
+            do {
+                try context.save()
+                completion(nil)
+            } catch {
+                completion(error)
+            }
         }
         
     }
@@ -53,16 +58,22 @@ public class CoreDataFeedStore: FeedStore {
         }
     }
     
-    private func deleteAllCachedData() {
+    private func deleteAllCachedData() -> Error? {
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Cache")
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         batchDeleteRequest.resultType = .resultTypeObjectIDs
         
-        let result = try! context.execute(batchDeleteRequest) as! NSBatchDeleteResult
-        let changes: [AnyHashable: Any] = [
-            NSDeletedObjectsKey: result.result as! [NSManagedObjectID]
-        ]
-        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+        do {
+            let result = try context.execute(batchDeleteRequest) as! NSBatchDeleteResult
+            let changes: [AnyHashable: Any] = [
+                NSDeletedObjectsKey: result.result as! [NSManagedObjectID]
+            ]
+            NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+            return nil
+        } catch {
+            return error
+        }
+        
     }
     
 }
