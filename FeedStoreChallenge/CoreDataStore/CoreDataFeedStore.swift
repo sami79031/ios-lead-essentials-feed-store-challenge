@@ -20,7 +20,8 @@ public class CoreDataFeedStore: FeedStore {
     }
     
     public func deleteCachedFeed(completion: @escaping DeletionCompletion) {
-        fatalError("Not omplemented")
+        deleteAllCachedData()
+        completion(nil)
     }
     
     public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
@@ -52,8 +53,8 @@ public class CoreDataFeedStore: FeedStore {
         }
     }
     
-    private func deleteAllData(entity: String) {
-        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+    private func deleteAllCachedData() {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Cache")
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
         batchDeleteRequest.resultType = .resultTypeObjectIDs
         
