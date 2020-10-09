@@ -24,25 +24,45 @@ public class CoreDataFeedStore: FeedStore {
     }
     
     public func insert(_ feed: [LocalFeedImage], timestamp: Date, completion: @escaping InsertionCompletion) {
-        let cache = Cache(context: context)
-        cache.timestamp = timestamp
-        cache.managedFeeds = feed.mapToManagedFeedImages(in: context).toNSOrderedSet
+        let context = self.context
         
-        try! context.save()
-        completion(nil)
+        context.perform {
+            let cache = Cache.getUniqueManagedCache(in: context)
+            cache.timestamp = timestamp
+            cache.managedFeeds = feed.mapToManagedFeedImages(in: context).toNSOrderedSet
+            try! context.save()
+            completion(nil)
+        }
+        
     }
     
     public func retrieve(completion: @escaping RetrievalCompletion) {
-        guard let managedCaches = try? context.fetch(Cache.fetchRequest() as NSFetchRequest<Cache>),
-              let firstObject = managedCaches.first,
-              let timestamp = firstObject.timestamp else {
-            
-            return completion(.empty)
-        }
+        let context = self.context
         
-        let localFeedImages = firstObject.managedFeedImages.map({$0.localFeedImage})
-        completion(.found(feed: localFeedImages, timestamp: timestamp))
+        context.perform {
+            guard let managedCaches = try? context.fetch(Cache.fetchRequest() as NSFetchRequest<Cache>),
+                  let firstObject = managedCaches.first,
+                  let timestamp = firstObject.timestamp else {
+                
+                return completion(.empty)
+            }
+            
+            let localFeedImages = firstObject.managedFeedImages.map( {$0.localFeedImage} )
+            completion(.found(feed: localFeedImages, timestamp: timestamp))
+        }
     }
     
+    private func deleteAllData(entity: String) {
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: entity)
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        batchDeleteRequest.resultType = .resultTypeObjectIDs
+        
+        let result = try! context.execute(batchDeleteRequest) as! NSBatchDeleteResult
+        let changes: [AnyHashable: Any] = [
+            NSDeletedObjectsKey: result.result as! [NSManagedObjectID]
+        ]
+        NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: [context])
+    }
     
 }
+
