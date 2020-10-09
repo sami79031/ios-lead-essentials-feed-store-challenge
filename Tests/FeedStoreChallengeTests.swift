@@ -18,84 +18,125 @@ class FeedStoreChallengeTests: XCTestCase, FeedStoreSpecs {
     //  Repeat this process until all tests are passing.
     //
     //  ***********************
+    
+    override func setUp() {
+        super.setUp()
+        
+        setupEmptyStoreState()
+    }
+    
+    override func tearDown() {
+        super.tearDown()
+        
+        undoStoreSideEffects()
+    }
 
 	func test_retrieve_deliversEmptyOnEmptyCache() {
-//		let sut = makeSUT()
-//
-//		assertThatRetrieveDeliversEmptyOnEmptyCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatRetrieveDeliversEmptyOnEmptyCache(on: sut)
 	}
 
 	func test_retrieve_hasNoSideEffectsOnEmptyCache() {
-//		let sut = makeSUT()
-//
-//		assertThatRetrieveHasNoSideEffectsOnEmptyCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatRetrieveHasNoSideEffectsOnEmptyCache(on: sut)
 	}
 
 	func test_retrieve_deliversFoundValuesOnNonEmptyCache() {
-//		let sut = makeSUT()
-//
-//		assertThatRetrieveDeliversFoundValuesOnNonEmptyCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatRetrieveDeliversFoundValuesOnNonEmptyCache(on: sut)
 	}
 
 	func test_retrieve_hasNoSideEffectsOnNonEmptyCache() {
-//		let sut = makeSUT()
-//
-//		assertThatRetrieveHasNoSideEffectsOnNonEmptyCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatRetrieveHasNoSideEffectsOnNonEmptyCache(on: sut)
 	}
 
 	func test_insert_deliversNoErrorOnEmptyCache() {
-//		let sut = makeSUT()
-//
-//		assertThatInsertDeliversNoErrorOnEmptyCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatInsertDeliversNoErrorOnEmptyCache(on: sut)
 	}
 
 	func test_insert_deliversNoErrorOnNonEmptyCache() {
-//		let sut = makeSUT()
-//
-//		assertThatInsertDeliversNoErrorOnNonEmptyCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatInsertDeliversNoErrorOnNonEmptyCache(on: sut)
 	}
 
 	func test_insert_overridesPreviouslyInsertedCacheValues() {
-//		let sut = makeSUT()
-//
-//		assertThatInsertOverridesPreviouslyInsertedCacheValues(on: sut)
+		let sut = makeSUT()
+
+		assertThatInsertOverridesPreviouslyInsertedCacheValues(on: sut)
 	}
 
 	func test_delete_deliversNoErrorOnEmptyCache() {
-//		let sut = makeSUT()
-//
-//		assertThatDeleteDeliversNoErrorOnEmptyCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatDeleteDeliversNoErrorOnEmptyCache(on: sut)
 	}
 
 	func test_delete_hasNoSideEffectsOnEmptyCache() {
-//		let sut = makeSUT()
-//
-//		assertThatDeleteHasNoSideEffectsOnEmptyCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatDeleteHasNoSideEffectsOnEmptyCache(on: sut)
 	}
 
 	func test_delete_deliversNoErrorOnNonEmptyCache() {
-//		let sut = makeSUT()
-//
-//		assertThatDeleteDeliversNoErrorOnNonEmptyCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatDeleteDeliversNoErrorOnNonEmptyCache(on: sut)
 	}
 
 	func test_delete_emptiesPreviouslyInsertedCache() {
-//		let sut = makeSUT()
-//
-//		assertThatDeleteEmptiesPreviouslyInsertedCache(on: sut)
+		let sut = makeSUT()
+
+		assertThatDeleteEmptiesPreviouslyInsertedCache(on: sut)
 	}
 
 	func test_storeSideEffects_runSerially() {
-//		let sut = makeSUT()
-//
-//		assertThatSideEffectsRunSerially(on: sut)
+		let sut = makeSUT()
+
+		assertThatSideEffectsRunSerially(on: sut)
 	}
 	
 	// - MARK: Helpers
 	
 	private func makeSUT() -> FeedStore {
-		fatalError("Must be implemented")
+        let bundle = Bundle(for: CoreDataFeedStore.self)
+        let sut = try! CoreDataFeedStore(storeURL: self.storeURL, bundle: bundle)
+        trackForMemoryLeak(sut)
+        return sut
 	}
+    
+    private var storeURL: URL {
+        return try! FileManager
+            .default
+            .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .appendingPathComponent("Model.store")
+    }
+    
+    private func setupEmptyStoreState() {
+        removePersistentStoreItExists()
+    }
+    
+    private func undoStoreSideEffects() {
+        removePersistentStoreItExists()
+    }
+    
+    private func removePersistentStoreItExists() {
+        let url = self.storeURL
+        if FileManager.default.fileExists(atPath: url.path) {
+            do {
+                try FileManager.default.removeItem(at: url)
+            } catch {
+                XCTFail("Failed to remove Model.store with error: \(error)")
+            }
+        }
+    }
 	
 }
 
