@@ -78,7 +78,9 @@ class FeedStoreIntegrationTests: XCTestCase {
     
     private func makeSUT() -> FeedStore {
         let bundle = Bundle(for: CoreDataFeedStore.self)
-        return try! CoreDataFeedStore(storeURL: self.storeURL, bundle: bundle)
+        let sut = try! CoreDataFeedStore(storeURL: self.storeURL, bundle: bundle)
+        trackForMemoryLeak(sut)
+        return sut
     }
     
     private func setupEmptyStoreState() {
