@@ -10,32 +10,6 @@ import Foundation
 import CoreData
 
 
-public extension ManagedLocalFeedImage {
-    var localFeedImage: LocalFeedImage {
-        return LocalFeedImage(id: id!, description: managed_description, location: location, url: url!)
-    }
-}
-
-internal extension Cache {
-    var managedFeedImages: [ManagedLocalFeedImage] {
-        return managedFeeds?.array as? [ManagedLocalFeedImage] ?? []
-    }
-    
-    @nonobjc class func fetchCache(in context: NSManagedObjectContext) throws -> Cache? {
-        let request = NSFetchRequest<Cache>(entityName: "Cache")
-        request.returnsObjectsAsFaults = false
-        return try context.fetch(request).first
-    }
-    
-    static func getUniqueManagedCache(in context: NSManagedObjectContext) -> Cache {
-        if let managedCaches = try? fetchCache(in: context) {
-            context.delete(managedCaches)
-        }
-        
-        return Cache(context: context)
-    }
-}
-
 internal extension Array {
     var toNSOrderedSet: NSOrderedSet {
         return NSOrderedSet(array: self)
