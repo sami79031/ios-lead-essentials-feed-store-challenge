@@ -105,7 +105,7 @@ class FeedStoreIntegrationTests: XCTestCase {
     private var storeURL: URL {
         return try! FileManager
             .default
-            .url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
+            .url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: true)
             .appendingPathComponent("Model.store")
     }
     
